@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SunCore</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="tempr">温度 %1$.2f</string>
+    <string name="humi"></string>
+    <string name="winspeed"></string>
+    <string name="windire"></string>
+    <string name="airpree"></string>
+    
+    <string name="objdn"></string>
+    <string name="objtype"></string>
+    <string name="alarmLevel"></string>
+    <string name="alarmTime"></string>
+    
+    <string name="arrayPV"></string>
+    <string name="unitPV"></string>
+    <string name="stationPV"></string>
+    
+    <string name="tenant1"></string>
+    <string name="tenant2"></string>
+    
+    
+</resources>

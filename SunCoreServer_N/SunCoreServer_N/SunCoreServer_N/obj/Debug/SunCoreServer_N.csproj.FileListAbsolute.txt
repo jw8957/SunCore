@@ -1,0 +1,5 @@
+D:\code\Android\SunCoreServer_N\SunCoreServer_N\SunCoreServer_N\bin\SunCoreServer_N.dll
+D:\code\Android\SunCoreServer_N\SunCoreServer_N\SunCoreServer_N\bin\SunCoreServer_N.pdb
+D:\code\Android\SunCoreServer_N\SunCoreServer_N\SunCoreServer_N\obj\Debug\SunCoreServer_N.dll
+D:\code\Android\SunCoreServer_N\SunCoreServer_N\SunCoreServer_N\obj\Debug\SunCoreServer_N.pdb
+D:\code\Android\SunCoreServer_N\SunCoreServer_N\SunCoreServer_N\obj\Debug\SunCoreServer_N.csprojResolveAssemblyReference.cache
