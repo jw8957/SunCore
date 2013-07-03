@@ -1,160 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/bg"
-    tools:context=".MainActivity" >
-    
-    <TabHost android:id="@+id/tabhost"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content">
-         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            
-             <TabWidget
-                 android:id="@android:id/tabs"
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-                 android:orientation="horizontal" >
-             </TabWidget>
-             
-             <FrameLayout android:id="@android:id/tabcontent"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content">
-                  
-                 	<LinearLayout
-                 	    android:id="@+android:id/weatherlayout"
-            			android:orientation="vertical"
-            			android:layout_width="fill_parent"
-            			android:layout_height="fill_parent">
-            			
-            			<TextView android:id="@+id/temperature"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/tempr"/>
-            			
-            			<TextView android:id="@+id/humidity"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/humi"/>
-            			
-            			<TextView android:id="@+id/winspeed"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/winspeed"/>
-            			
-            			<TextView android:id="@+id/windirection"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/windire"/>
-            			
-            			<TextView android:id="@+id/airpressure"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/airpree"/>
-            		</LinearLayout>
-            		
-                 	<LinearLayout
-                 	    android:id="@+android:id/alarmlayout"
-            			android:orientation="vertical"
-            			android:layout_width="fill_parent"
-            			android:layout_height="fill_parent">
-            			
-            			<TextView android:id="@+id/objdn"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="@string/objdn"/>
-            			
-            			<TextView android:id="@+id/objtype"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="@string/objtype"/>
-            			
-            			<TextView android:id="@+id/alarmLevel"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="@string/alarmLevel"/>
-            			
-            			<TextView android:id="@+id/alarmTime"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="@string/alarmTime"/>
-            			
-            		</LinearLayout>
-            		
-                 	<LinearLayout
-                 	    android:id="@+android:id/eletricLayout"
-            			android:orientation="vertical"
-            			android:layout_width="fill_parent"
-            			android:layout_height="fill_parent">
-            			
-            			<TextView android:id="@+id/arrayPV"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/arrayPV"/>
-            			
-            			<TextView android:id="@+id/unitPV"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/unitPV"/>
-            			
-            			<TextView android:id="@+id/stationPV"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:text="@string/stationPV"/>
-            		</LinearLayout>
-            		
-                 	<LinearLayout
-                 	    android:id="@+android:id/onlineLayout"
-            			android:orientation="vertical"
-            			android:layout_width="fill_parent"
-            			android:layout_height="fill_parent">
-            			
-            			<TextView android:id="@+id/tenant1"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="@string/tenant1"/>
-            			
-            			<TextView android:id="@+id/tenant2"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" 
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="@string/tenant2"/>
-            		</LinearLayout>
-             </FrameLayout>
-         </LinearLayout>
-    </TabHost>
+    android:layout_height="match_parent" >
+
+    <com.astuetz.viewpager.extensions.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dip"
+        android:background="@drawable/background_tabs" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tabs"
+        tools:context=".MainActivity" />
+
 </RelativeLayout>
