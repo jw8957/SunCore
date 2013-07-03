@@ -36,8 +36,7 @@ public class LogInActivity extends Activity {
             		startActivity(intent);  
             		finish();//停止当前的Activity,如果不写,则按返回键会跳转回原来的Activity
                 }        
-            }  
-              
+            }
         });  
     }  
 }
