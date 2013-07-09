@@ -5,21 +5,15 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 	
-    <LinearLayout
-        android:id="@+id/chart_show"
+    <FrameLayout
+        android:id="@+id/Power_chart_show"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:layout_weight="1"
     >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-    </LinearLayout>
+    </FrameLayout>
     
     
 </LinearLayout>

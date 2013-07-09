@@ -58,8 +58,11 @@ public class Power extends Fragment {
 	private int type;
 	private String spec;
 	private ArrayList<ArrayList<String>> type_spec_spinnerList;
-	private Spinner typeSpinner;
-	private Spinner specSpinner;
+	private Map<String, ArrayList<String>> unit_array_Map;
+	
+	private Spinner StationSpinner;
+	private Spinner UnitSpinner;
+	private Spinner ArraySpinner;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,8 +71,13 @@ public class Power extends Fragment {
 		Mlayout=(ViewGroup)powerLayout.findViewById(R.id.MLayout_Power);
 		MainActivity.setTabMargin(Mlayout, this);
 		
-		typeSpinner=(Spinner)powerLayout.findViewById(R.id.power_type_spinner);
-		specSpinner=(Spinner)powerLayout.findViewById(R.id.power_spec_spinner);
+		
+		type=0;
+		spec="";
+		StationSpinner=(Spinner)powerLayout.findViewById(R.id.station_spinner);
+		UnitSpinner=(Spinner)powerLayout.findViewById(R.id.unit_spinner);
+		ArraySpinner=(Spinner)powerLayout.findViewById(R.id.array_spinner);
+		
 		realTimeButton=(Button)powerLayout.findViewById(R.id.realtimepower_button);
 		
 		realTimeButton.setOnClickListener(new OnClickListener() {
@@ -82,29 +90,117 @@ public class Power extends Fragment {
 			}
 		});
 		
-		type=0;
-		spec="";
-		set_TypeSpecList();
-		setTypeSpinner();
-		
+		set_Unit_Array_Map();
 		getDayPower(0, "null");
+		
+		setStationSpinner();
+		setUnitSpinner();
+		//set_TypeSpecList();
+		//setTypeSpinner();
+		
+		
 		return powerLayout;
 	}
 	
-	private void setTypeSpinner() {
-		String[] m = {"电站","单元","阵列"}; 
+	private void  set_Unit_Array_Map() {
+		unit_array_Map=new HashMap<String, ArrayList<String>>();
+		
+		//unit_array_Map.put("[UNIT_OID]1", "");
+		ArrayList<String> u1=new ArrayList<String>();
+		u1.add("[ARRAY_OLD]25209");
+		u1.add("[ARRAY_OLD]25210");
+		u1.add("[ARRAY_OLD]25211");
+		u1.add("[ARRAY_OLD]25212");
+		u1.add("[ARRAY_OLD]25213");
+		unit_array_Map.put("[UNIT_OID]1", u1);
+		
+		ArrayList<String> u2=new ArrayList<String>();
+		u2.add("[ARRAY_OLD]25204");
+		u2.add("[ARRAY_OLD]25205");
+		u2.add("[ARRAY_OLD]25206");
+		u2.add("[ARRAY_OLD]25207");
+		u2.add("[ARRAY_OLD]25208");
+		unit_array_Map.put("[UNIT_OID]2", u2);
+		
+		ArrayList<String> u3=new ArrayList<String>();
+		u3.add("[ARRAY_OLD]25201");
+		u3.add("[ARRAY_OLD]25202");
+		u3.add("[ARRAY_OLD]25203");
+		u3.add("[ARRAY_OLD]25204");
+		u3.add("[ARRAY_OLD]25213");
+		u3.add("[ARRAY_OLD]25214");
+		u3.add("[ARRAY_OLD]30212");
+		unit_array_Map.put("[UNIT_OID]3", u3);
+		
+		ArrayList<String> u4=new ArrayList<String>();
+		u4.add("[ARRAY_OLD]30114");
+		u4.add("[ARRAY_OLD]30115");
+		u4.add("[ARRAY_OLD]30116");
+		u4.add("[ARRAY_OLD]30201");
+		unit_array_Map.put("[UNIT_OID]4", u4);
+		
+		ArrayList<String> u5=new ArrayList<String>();
+		u5.add("[ARRAY_OLD]30202");
+		u5.add("[ARRAY_OLD]30203");
+		u5.add("[ARRAY_OLD]30204");
+		u5.add("[ARRAY_OLD]30302");
+		unit_array_Map.put("[UNIT_OID]5", u5);
+		
+		ArrayList<String> u6=new ArrayList<String>();
+		u6.add("[ARRAY_OLD]30205");
+		u6.add("[ARRAY_OLD]30209");
+		u6.add("[ARRAY_OLD]30210");
+		u6.add("[ARRAY_OLD]30303");
+		u6.add("[ARRAY_OLD]30306");
+		unit_array_Map.put("[UNIT_OID]6", u6);
+		
+		ArrayList<String> u7=new ArrayList<String>();
+		u7.add("[ARRAY_OLD]30206");
+		u7.add("[ARRAY_OLD]30211");
+		u7.add("[ARRAY_OLD]30214");
+		u7.add("[ARRAY_OLD]30307");
+		u7.add("[ARRAY_OLD]30308");
+		u7.add("[ARRAY_OLD]30309");
+		unit_array_Map.put("[UNIT_OID]7", u7);
+		
+		ArrayList<String> u8=new ArrayList<String>();
+		u8.add("[ARRAY_OLD]30207");
+		u8.add("[ARRAY_OLD]30213");
+		u8.add("[ARRAY_OLD]30310");
+		u8.add("[ARRAY_OLD]30311");
+		unit_array_Map.put("[UNIT_OID]8", u8);
+		
+		ArrayList<String> u9=new ArrayList<String>();
+		u9.add("[ARRAY_OLD]30208");
+		u9.add("[ARRAY_OLD]30312");
+		u9.add("[ARRAY_OLD]30313");
+		u9.add("[ARRAY_OLD]30314");
+		u9.add("[ARRAY_OLD]30315");
+		unit_array_Map.put("[UNIT_OID]9", u9);
+		
+		ArrayList<String> u10=new ArrayList<String>();
+		u10.add("[ARRAY_OLD]45209");
+		u10.add("[ARRAY_OLD]45210");
+		u10.add("[ARRAY_OLD]14305");
+		unit_array_Map.put("[UNIT_OID]10", u10);
+		
+		
+	}
+	
+	private void setStationSpinner() {
+		String[] m = {"glm"}; 
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.alarm_sort_item,m);
 		
-		typeSpinner.setAdapter(adapter);
-		typeSpinner.setVisibility(View.VISIBLE);
-		typeSpinner.setSelection(0);
-		setSpecSpinner(0);
+		StationSpinner.setAdapter(adapter);
+		StationSpinner.setVisibility(View.VISIBLE);
+		StationSpinner.setSelection(0);
+		//setSpecSpinner(0);
 		
-		typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+		StationSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {  
 	            
-				setSpecSpinner(arg2);
+				//setSpecSpinner(arg2);
 	        }
 
 			@Override
@@ -115,13 +211,61 @@ public class Power extends Fragment {
 		});
 	}
 	
-	private void setSpecSpinner(int type) {
-		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.alarm_sort_item,type_spec_spinnerList.get(type));
-		specSpinner.setAdapter(adapter);
-		specSpinner.setVisibility(View.VISIBLE);
-		specSpinner.setSelection(0);
+	private void setUnitSpinner() {
+		final String[] m=new String[unit_array_Map.size()];
+		//for(int i=0;i<unit_array_Map.size();++i)
+		//	m=unit_array_Map.
+		//String[] m = {"电站","单元","阵列"};
+		int i=0;
+		for(Iterator ite = unit_array_Map.entrySet().iterator(); ite.hasNext();){
+			Map.Entry entry = (Map.Entry) ite.next();
+			m[i]=(String)entry.getKey();
+			++i;
+		}
 		
-		specSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.alarm_sort_item,m);
+		
+		UnitSpinner.setAdapter(adapter);
+		UnitSpinner.setVisibility(View.VISIBLE);
+		UnitSpinner.setSelection(0);
+		//setSpecSpinner(0);
+		
+		UnitSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				System.out.println(m[arg2]);
+				setArraySpinner(m[arg2]);
+	        }
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	private void setArraySpinner(String Unit) {
+		ArrayList<String> array=unit_array_Map.get(Unit);
+		String m[];
+		if(array!=null){
+			System.out.println("unit:"+Unit);
+			m=new String[array.size()];
+			System.out.println("size:"+array.size());
+			for(int i=0;i<array.size();++i){
+				m[i]=(String)array.get(i);
+				System.out.println(m[i]);
+			}
+		}else {
+			m=new String[1];
+			m[0]=" ";
+		}
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.alarm_sort_item,m);
+		ArraySpinner.setAdapter(adapter);
+		ArraySpinner.setVisibility(View.VISIBLE);
+		ArraySpinner.setSelection(0);
+		
+		ArraySpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {  
 	            //view.setText("你的血型是："+m[arg2]);
@@ -237,6 +381,7 @@ public class Power extends Fragment {
 	        //renderer.setYLabels(100);
 	        
 	        FrameLayout linearView=(FrameLayout)Mlayout.findViewById(R.id.PowerDayChart);
+	        System.out.println("bbb");
 	        GraphicalView gv= ChartFactory.getBarChartView(this.getActivity(), dataset, renderer,Type.STACKED);
 	        linearView.addView(gv, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 		}else{

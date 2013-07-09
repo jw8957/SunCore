@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +24,7 @@ public class PowerChart extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.weatherchart);
+		setContentView(R.layout.powerchart);
 		
 		Intent i=getIntent();
 		int type=i.getIntExtra("type", 0);
@@ -144,7 +145,7 @@ public class PowerChart extends Activity {
         renderer.setMarginsColor(Color.WHITE);
         renderer.setAxisTitleTextSize(16);
         
-        LinearLayout linearView=(LinearLayout)findViewById(R.id.chart_show);
+        FrameLayout linearView=(FrameLayout)findViewById(R.id.Power_chart_show);
         GraphicalView gv= ChartFactory.getLineChartView(this, dataset, renderer);
         linearView.addView(gv, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 	}

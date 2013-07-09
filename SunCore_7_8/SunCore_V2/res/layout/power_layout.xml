@@ -17,21 +17,22 @@
         android:id="@+id/spinnerLayout" >
 
         <Spinner
-            android:id="@+id/power_type_spinner"
+            android:id="@+id/station_spinner"
             android:layout_width="103dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.15" />
 
         <Spinner
-            android:id="@+id/power_spec_spinner"
+            android:id="@+id/unit_spinner"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.43" />
+            android:layout_weight="0.19" />
 
-        <Button
-            android:id="@+id/power_search_button"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:text="S" />
+        <Spinner
+            android:id="@+id/array_spinner"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <FrameLayout
@@ -40,6 +41,12 @@
         android:layout_height="match_parent"
         android:layout_below="@id/spinnerLayout"
         >
+
+        <Button
+            android:id="@+id/power_search_button"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:text="S" />
         
     </FrameLayout>
 

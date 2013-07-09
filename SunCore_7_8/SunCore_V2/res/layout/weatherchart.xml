@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/HistroyWeatherLayout" >
 	
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/WeatherSpinnerLayout" >
+        
+        <Spinner
+            android:id="@+id/histroy_weather_spinner"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.43" />
+
+        <Button
+            android:id="@+id/weather_search_button"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:text="S" />
+    </LinearLayout>
+    
+    <FrameLayout
         android:id="@+id/chart_show"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:layout_weight="1"
+        android:layout_below="@id/WeatherSpinnerLayout"
     >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-    </LinearLayout>
-</LinearLayout>
+    
+   </FrameLayout>
+</RelativeLayout>

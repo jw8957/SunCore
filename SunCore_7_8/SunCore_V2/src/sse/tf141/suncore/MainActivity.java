@@ -201,6 +201,8 @@ public class MainActivity extends FragmentActivity {
 				return new Equipment();
 			else if(position==2)
 				return new Power();
+			else if(position==3)
+				return new Instance();
 			else
 				return SuperAwesomeCardFragment.newInstance(position);
 		}

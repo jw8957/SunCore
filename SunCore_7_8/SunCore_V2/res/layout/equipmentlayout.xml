@@ -3,17 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/MLayout_Equip"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-		 
         
         <LinearLayout
+            android:id="@+id/equip_spinner_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:orientation="horizontal" >
+            
             <TextView 
             android:text="当前告警设备"
             android:layout_width="wrap_content"
@@ -27,24 +29,41 @@
            	android:layout_height="wrap_content">
                 
             </Spinner>
-            
         </LinearLayout>
-		
+        
         <ListView
             android:id="@+id/AlarmEquiplistView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/equiplayoutbottom"
+            android:layout_below="@id/equip_spinner_layout"
+             >
         </ListView>
-        
-        
-        
+		
         <LinearLayout
+            android:id="@+id/equiplayoutbottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+             >
+
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10" />
+
+            <Button
+                android:id="@+id/EquipSearchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Search" />
+            
         </LinearLayout>
         
-       
         
-    </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>

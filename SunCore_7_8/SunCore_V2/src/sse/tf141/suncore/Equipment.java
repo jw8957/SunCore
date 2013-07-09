@@ -18,12 +18,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,6 +51,7 @@ public class Equipment extends Fragment {
 	private SimpleAdapter AlarmListAdapter;
 	private List<Map<String,Object>> AlarmAdapterList;
 	private PopupWindow mPopupWindow;
+	private Button EquipSearchButton;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +91,17 @@ public class Equipment extends Fragment {
 		
 		setSpinner();
 		return equipLayoutView;
+	}
+	
+	private void setSearchButton() {
+		EquipSearchButton=(Button)Mlayout.findViewById(R.id.EquipSearchButton);
+		EquipSearchButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	
 	private void getServerData() {
@@ -143,6 +157,22 @@ public class Equipment extends Fragment {
 		
 		map=new HashMap<String, Object>();
 		map.put("equip", "[ARRAY_OID]30303");
+		map.put("level", 1);
+		map.put("unit", 2);
+		map.put("time", "2012-12-20 14:10:01");
+		map.put("type", "TRANSFORMER_PARAERRORSIGNAL_OID");
+		AlarmEquipList.add(map);
+		
+		map=new HashMap<String, Object>();
+		map.put("equip", "[ARRAY_OID]30302");
+		map.put("level", 1);
+		map.put("unit", 2);
+		map.put("time", "2012-12-20 14:10:01");
+		map.put("type", "TRANSFORMER_PARAERRORSIGNAL_OID");
+		AlarmEquipList.add(map);
+		
+		map=new HashMap<String, Object>();
+		map.put("equip", "[ARRAY_OID]30300");
 		map.put("level", 1);
 		map.put("unit", 2);
 		map.put("time", "2012-12-20 14:10:01");
