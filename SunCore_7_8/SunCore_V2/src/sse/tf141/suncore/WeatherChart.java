@@ -1,6 +1,11 @@
 package sse.tf141.suncore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -9,15 +14,19 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.apache.http.client.RedirectException;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint.Align;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,37 +47,266 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 public class WeatherChart extends Activity {
 	private Spinner histroySpinner;
 	private Button histroySearchButton;
-	DatePickerDialog histroydateDlg;
-	DatePicker dPicker1;
-	DatePicker dPicker2;
+	private DatePickerDialog histroydateDlg;
+	private DatePicker dPicker1;
+	private DatePicker dPicker2;
 	
-	OnDateSetListener dateListener;
+	private OnDateSetListener dateListener;
 	int pos;
-	PopupWindow mPopupWindow;
+	int status;
+	private PopupWindow mPopupWindow;
+	private FrameLayout ChartLayoutView;
+	private GraphicalView gv;
+	private int Year;
+	private int Month;
+	private int Day;
+	//数据
+	private ArrayList<LinkedHashMap<String,Double>> TodayWeather;
+	private ArrayList<LinkedHashMap<String,Double>> HistroyDayWeather;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.weatherchart);
 		
-		
-		//dPicker1=(DatePicker)findViewById(R.id.datePicker1);
-		//dPicker2=(DatePicker)findViewById(R.id.datePicker2);
-		
 		Intent i=getIntent();
 		pos=i.getIntExtra("pos", 0);
+		status=0;
 		
-		histroySpinner = (Spinner)findViewById(R.id.histroy_weather_spinner);
+		this.Year=2013;
+		this.Month=6;
+		this.Day=20;
+		
+		ChartLayoutView=(FrameLayout)findViewById(R.id.chart_show);
+		histroySpinner=(Spinner)findViewById(R.id.histroy_weather_spinner);
+		
 		setHistroySpinner();
-		//setDatePickerDlg();
 		setHistroySearchButton();
-		//initPopuptWindow();
+		setTodayWeather();
+		setHistroyWeather();
 		
-		showChart(pos);
+		showChart(pos,0);
+	}
+	
+	private void setTodayWeather() {
+		TodayWeather=new ArrayList<LinkedHashMap<String,Double>>();
+		LinkedHashMap<String, Double>map;
+		//辐射量
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 100.0);
+		map.put("09:00", 120.0);
+		/*
+		map.put("10:00", 125.0);
+		map.put("11:00", 113.0);
+		map.put("12:00", 133.0);
+		map.put("13:00", 150.0);
+		map.put("14:00", 120.0);
+		map.put("15:00", 100.0);
+		map.put("16:00", 111.0);
+		map.put("17:00", 99.0);
+		map.put("18:00", 80.0);
+		map.put("19:00", 70.0);
+		map.put("20:00", 60.0);
+		*/
+		TodayWeather.add(map);
+		//温度
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 10.0);
+		map.put("09:00", 21.4);
+		/*
+		map.put("10:00", 22.5);
+		map.put("11:00", 25.0);
+		map.put("12:00", 30.0);
+		map.put("13:00", 35.0);
+		map.put("14:00", 22.0);
+		map.put("15:00", 20.5);
+		map.put("16:00", 16.5);
+		map.put("17:00", 17.5);
+		map.put("18:00", 15.5);
+		map.put("19:00", 12.0);
+		map.put("20:00", 9.0);
+		*/
+		TodayWeather.add(map);
+		//湿度
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 21.5);
+		map.put("09:00", 20.0);
+		/*
+		map.put("10:00", 19.5);
+		map.put("11:00", 19.0);
+		map.put("12:00", 18.5);
+		map.put("13:00", 17.5);
+		map.put("14:00", 18.0);
+		map.put("15:00", 18.0);
+		map.put("16:00", 19.0);
+		map.put("17:00", 20.0);
+		map.put("18:00", 20.5);
+		map.put("19:00", 21.0);
+		map.put("20:00", 22.0);
+		*/
+		TodayWeather.add(map);
+		//风向
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 1860.0);
+		map.put("09:00", 1930.0);
+		/*
+		map.put("10:00", 1840.0);
+		map.put("11:00", 1910.0);
+		map.put("12:00", 1930.0);
+		map.put("13:00", 1890.0);
+		map.put("14:00", 1860.0);
+		map.put("15:00", 1830.0);
+		map.put("16:00", 1930.0);
+		map.put("17:00", 1870.0);
+		map.put("18:00", 1880.0);
+		map.put("19:00", 1890.0);
+		map.put("20:00", 1920.0);
+		*/
+		TodayWeather.add(map);
+		//风速
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 2.5);
+		map.put("09:00", 4.1);
+		/*
+		map.put("10:00", 3.1);
+		map.put("11:00", 2.6);
+		map.put("12:00", 3.9);
+		map.put("13:00", 2.7);
+		map.put("14:00", 3.1);
+		map.put("15:00", 3.6);
+		map.put("16:00", 3.6);
+		map.put("17:00", 3.4);
+		map.put("18:00", 2.2);
+		map.put("19:00", 1.7);
+		map.put("20:00", 2.6);
+		*/
+		TodayWeather.add(map);
+		//气压
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", -4.3);
+		map.put("09:00", -4.4);
+		/*
+		map.put("10:00", -4.5);
+		map.put("11:00", -4.4);
+		map.put("12:00", -4.4);
+		map.put("13:00", -4.5);
+		map.put("14:00", -4.5);
+		map.put("15:00", -4.4);
+		map.put("16:00", -4.4);
+		map.put("17:00", -4.4);
+		map.put("18:00", -4.4);
+		
+		map.put("19:00", -4.3);
+		map.put("20:00", -4.2);
+		*/
+		TodayWeather.add(map);
+	}
+	
+	private void  setHistroyWeather() {
+		HistroyDayWeather=new ArrayList<LinkedHashMap<String,Double>>();
+		LinkedHashMap<String, Double>map;
+		//辐射量
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 100.5);
+		map.put("09:00", 119.5);
+		map.put("10:00", 120.0);
+		map.put("11:00", 113.2);
+		map.put("12:00", 130.5);
+		map.put("13:00", 145.0);
+		map.put("14:00", 122.0);
+		map.put("15:00", 102.0);
+		map.put("16:00", 110.0);
+		map.put("17:00", 95.0);
+		map.put("18:00", 82.0);
+		map.put("19:00", 77.0);
+		map.put("20:00", 59.0);
+		HistroyDayWeather.add(map);
+		//温度
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 10.0);
+		map.put("09:00", 20.4);
+		map.put("10:00", 21.5);
+		map.put("11:00", 28.0);
+		map.put("12:00", 27.0);
+		map.put("13:00", 35.0);
+		map.put("14:00", 19.0);
+		map.put("15:00", 20.5);
+		map.put("16:00", 16.5);
+		map.put("17:00", 19.5);
+		map.put("18:00", 15.5);
+		map.put("19:00", 11.0);
+		map.put("20:00", 10.0);
+		HistroyDayWeather.add(map);
+		//湿度
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 21.5);
+		map.put("09:00", 20.0);
+		map.put("10:00", 19.5);
+		map.put("11:00", 19.0);
+		map.put("12:00", 20.5);
+		map.put("13:00", 17.5);
+		map.put("14:00", 18.0);
+		map.put("15:00", 18.0);
+		map.put("16:00", 19.0);
+		map.put("17:00", 20.0);
+		map.put("18:00", 18.5);
+		map.put("19:00", 21.0);
+		map.put("20:00", 22.0);
+		HistroyDayWeather.add(map);
+		//风向
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 1860.0);
+		map.put("09:00", 1930.0);
+		map.put("10:00", 1820.0);
+		map.put("11:00", 1905.0);
+		map.put("12:00", 1930.0);
+		map.put("13:00", 1900.0);
+		map.put("14:00", 1860.0);
+		map.put("15:00", 1830.0);
+		map.put("16:00", 1930.0);
+		map.put("17:00", 1870.0);
+		map.put("18:00", 1885.0);
+		map.put("19:00", 1890.0);
+		map.put("20:00", 1900.0);
+		HistroyDayWeather.add(map);
+		//风速
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", 2.5);
+		map.put("09:00", 4.1);
+		map.put("10:00", 3.1);
+		map.put("11:00", 1.6);
+		map.put("12:00", 3.9);
+		map.put("13:00", 2.7);
+		map.put("14:00", 2.1);
+		map.put("15:00", 3.6);
+		map.put("16:00", 3.6);
+		map.put("17:00", 3.4);
+		map.put("18:00", 3.2);
+		map.put("19:00", 1.7);
+		map.put("20:00", 2.6);
+		HistroyDayWeather.add(map);
+		//气压
+		map=new LinkedHashMap<String, Double>();
+		map.put("08:00", -4.3);
+		map.put("09:00", -4.4);
+		map.put("10:00", -2.5);
+		map.put("11:00", -4.4);
+		map.put("12:00", -5.4);
+		map.put("13:00", -4.5);
+		map.put("14:00", -4.5);
+		map.put("15:00", -7.4);
+		map.put("16:00", -4.4);
+		map.put("17:00", -4.4);
+		map.put("18:00", -3.4);
+		map.put("19:00", -3.3);
+		map.put("20:00", -4.2);
+		HistroyDayWeather.add(map);
 	}
 	
 	private void setHistroySpinner() {
@@ -95,7 +333,7 @@ public class WeatherChart extends Activity {
 	private void setHistroySearchButton() {
 		histroySearchButton=(Button)findViewById(R.id.weather_search_button);
 		histroySearchButton.setOnClickListener(new OnClickListener() {
-			//private int dialogId = 0;   //默认为0则不显示对话框  
+			//private int dialogId = 0;   //默认为0则不显示对话框
 			@SuppressWarnings("deprecation")
 			public void onClick(View v) {
 				int type=histroySpinner.getSelectedItemPosition();
@@ -103,7 +341,13 @@ public class WeatherChart extends Activity {
 				case 0:
 					break;
 				case 1:
+					//status=1;
 					showDialog(0);
+					//ChartLayoutView.removeView(gv);
+					//if(WeatherChart.this.Year>2013 || WeatherChart.this.Month>7){
+					//	Toast.makeText(WeatherChart.this,"改历史天气不存在", Toast.LENGTH_SHORT).show();
+					//}
+					//showChart(pos, status);
 					break;
 				case 2:
 					initPopuptWindow();
@@ -133,6 +377,9 @@ public class WeatherChart extends Activity {
 					@Override  
                     public void onDateChanged(DatePicker view, int year, int monthOfYear,  
                             int dayOfMonth) {  
+						WeatherChart.this.Month=monthOfYear+1;
+						WeatherChart.this.Year=year;
+						WeatherChart.this.Day=dayOfMonth;
                         // TODO Auto-generated method stub  
                         //当前日期更改时，在这里设置  
                         //c.set(year,monthOfYear,dayOfMonth);  
@@ -175,40 +422,31 @@ public class WeatherChart extends Activity {
                 return false;  
             }
         }); 
-        //mPopupWindow.setT
-        /*
-        getEquipInfo("null");
-        TextView equip_name_tv=(TextView)popupWindow.findViewById(R.id.array_name_tv);
-        TextView equip_model_tv=(TextView)popupWindow.findViewById(R.id.array_module_tv);
-        TextView equip_vendor_tv=(TextView)popupWindow.findViewById(R.id.array_vendor_tv);
-        TextView equip_structure_tv=(TextView)popupWindow.findViewById(R.id.array_structrue_tv);
-        TextView equip_serial_tv=(TextView)popupWindow.findViewById(R.id.array_serial_tv);
-        TextView equip_module_tv=(TextView)popupWindow.findViewById(R.id.array_module_tv);
-        TextView alarm_type_tv=(TextView)popupWindow.findViewById(R.id.alarm_type_tv);
-        
-        equip_name_tv.setText(equipInfo.get("name"));
-        equip_model_tv.setText(equipInfo.get("model"));
-        equip_vendor_tv.setText(equipInfo.get("vendor"));
-        equip_structure_tv.setText(equipInfo.get("structure"));
-        equip_serial_tv.setText(equipInfo.get("serial"));
-        equip_module_tv.setText(equipInfo.get("module"));
-        //equip_model_tv.setText(equipInfo.get("name"));
-         * */
+
     }
 	
 	/**
 	 * 当Activity调用showDialog函数时会触发该函数的调用：
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case 0:
 			dateListener =new DatePickerDialog.OnDateSetListener() {  
+				//pub
 				@Override  
 				public void onDateSet(DatePicker view,int year, int month, int dayOfMonth) {
-					histroySearchButton.setText("Y:" + year + "M:" +(month+1) + "D:" + dayOfMonth);  
+					WeatherChart.this.Month=month+1;
+					WeatherChart.this.Year=year;
+					WeatherChart.this.Day=dayOfMonth;
+					//histroySearchButton.setText("Y:" + year + "M:" +(month+1) + "D:" + dayOfMonth);  
 				}
-			}; 
+				
+			};
+			
+			
+			
 			Calendar calendar=Calendar.getInstance();
 			histroydateDlg=new DatePickerDialog(WeatherChart.this,
 												dateListener,
@@ -216,110 +454,148 @@ public class WeatherChart extends Activity {
 												calendar.get(Calendar.MONTH),
 												calendar.get(Calendar.DAY_OF_MONTH)
 												);
+			histroydateDlg.setButton("确定", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+					if(WeatherChart.this.Year>2013 || WeatherChart.this.Month>7){
+						Toast.makeText(WeatherChart.this,"改历史天气不存在", Toast.LENGTH_SHORT).show();
+					}else{
+						ChartLayoutView.removeView(gv);
+						status=1;
+						showChart(pos, status);
+					}
+				}
+			});
+			//histroydateDlg.onClick(histroydateDlg, which)
+			
+			//histroydateDlg.seto
 			return histroydateDlg;
 		}
 		return null;
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void showChart(int pos){
+	private void showChart(int pos,int status){
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         XYSeries series;
+        
+        renderer.setXTitle("日期");
         switch (pos) {
-		case 0:
-			series = new XYSeries("辐射量");
-			series.add(1, 100);
-	        series.add(2, 120);
-	        series.add(3, 125);
-	        series.add(4, 113);
-	        series.add(5, 133);
-	        series.add(6, 150);
-	        series.add(7, 120);
-	        series.add(8, 100);
-	        series.add(9, 111);
-	        series.add(10, 99);
-	        series.add(11, 80);
-	        series.add(12,60);
-			break;
-		case 1:
-			series = new XYSeries("温度");
-	        series.add(1, 10);
-	        series.add(2, 21);
-	        series.add(3, 22);
-	        series.add(4, 25);
-	        series.add(5, 30);
-	        series.add(6, 35);
-	        series.add(7, 22);
-	        series.add(8, 20);
-	        series.add(9, 16);
-	        series.add(10, 17);
-	        series.add(11, 10);
-	        series.add(12, 8);
-			break;
-		case 2:
-			series = new XYSeries("湿度");
-			series.add(1, 70);
-	        series.add(2, 60);
-	        series.add(3, 50);
-	        series.add(4, 40);
-	        series.add(5, 36);
-	        series.add(6, 20);
-	        series.add(7, 28);
-	        series.add(8, 34);
-	        series.add(9, 43);
-	        series.add(10, 50);
-	        series.add(11, 60);
-	        series.add(12, 75);
-			break;
-		case 3:
-			series = new XYSeries("风向");
-			series.add(1, 10);
-	        series.add(2, 15);
-	        series.add(3, 17);
-	        series.add(4, 12);
-	        series.add(5, 17);
-	        series.add(6, 10);
-	        series.add(7, 15);
-	        series.add(8, 17);
-	        series.add(9, 12);
-	        series.add(10, 17);
-	        series.add(11, 10);
-	        series.add(12, 15);
-			break;
-		case 4:
-			series = new XYSeries("风速");
-			series.add(1, 10);
-	        series.add(2, 15);
-	        series.add(3, 17);
-	        series.add(4, 12);
-	        series.add(5, 17);
-	        series.add(6, 10);
-	        series.add(7, 15);
-	        series.add(8, 17);
-	        series.add(9, 12);
-	        series.add(10, 17);
-	        series.add(11, 10);
-	        series.add(12, 15);
-			break;
-		case 5:
-			series = new XYSeries("气压");
-			series.add(1, 10);
-	        series.add(2, 15);
-	        series.add(3, 17);
-	        series.add(4, 10);
-	        series.add(5, 17);
-	        series.add(6, 10);
-	        series.add(7, 22);
-	        series.add(8, 17);
-	        series.add(9, 12);
-	        series.add(10, 17);
-	        series.add(11, 10);
-	        series.add(12, 15);
-			break;
-		default:
-			series = new XYSeries("气压");
-			break;
+			case 0:
+				renderer.setYTitle("辐射量");
+				if(status==0){
+					series = new XYSeries("今日辐射量");
+					renderer.setChartTitle("今日辐射量");
+					//renderer.setChartTitle(arg0);
+				}
+				else{
+					series = new XYSeries("历史辐射量");
+					renderer.setChartTitle(this.Year+"-"+this.Month+"-"+this.Day+"辐射量");
+				}
+			    renderer.setXAxisMin(1);
+			    renderer.setXAxisMax(13);
+			    renderer.setYAxisMin(0);
+			    renderer.setYAxisMax(300);
+				break;
+			case 1:
+				renderer.setYTitle("温度");
+				if(status==0){
+					series = new XYSeries("今日温度");
+					renderer.setChartTitle("今日温度");
+				}
+				else{
+					series = new XYSeries("历史温度");
+					renderer.setChartTitle(this.Year+"-"+this.Month+"-"+this.Day+"温度");
+				}
+				renderer.setXAxisMin(1);
+			    renderer.setXAxisMax(13);
+			    renderer.setYAxisMin(-10);
+			    renderer.setYAxisMax(40);
+				break;
+			case 2:
+				renderer.setYTitle("湿度");
+				if(status==0){
+					series = new XYSeries("今日湿度");
+					renderer.setChartTitle("今日湿度");
+				}
+				else {
+					series = new XYSeries("历史湿度");
+					renderer.setChartTitle(this.Year+"-"+this.Month+"-"+this.Day+"湿度");
+				}
+				renderer.setXAxisMin(1);
+			    renderer.setXAxisMax(13);
+			    renderer.setYAxisMin(0);
+			    renderer.setYAxisMax(30);
+				break;
+			case 3:
+				renderer.setYTitle("风向");
+				if(status==0){
+					series = new XYSeries("今日风向");
+					renderer.setChartTitle("今日风向");
+				}
+				else {
+					series = new XYSeries("历史风向");
+					renderer.setChartTitle(this.Year+"-"+this.Month+"-"+this.Day+"风向");
+				}
+				renderer.setXAxisMin(1);
+			    renderer.setXAxisMax(13);
+			    renderer.setYAxisMin(1500);
+			    renderer.setYAxisMax(3000);
+				break;
+			case 4:
+				renderer.setYTitle("风速");
+				if(status==0){
+					series = new XYSeries("今日风速");
+					renderer.setChartTitle("今日风速");
+				}
+				else {
+					series = new XYSeries("历史风速");
+					renderer.setChartTitle(this.Year+"-"+this.Month+"-"+this.Day+"风速");
+				}
+				renderer.setXAxisMin(1);
+			    renderer.setXAxisMax(13);
+			    renderer.setYAxisMin(0);
+			    renderer.setYAxisMax(5);
+				break;
+			case 5:
+				renderer.setYTitle("气压");
+				if(status==0){
+					series = new XYSeries("今日气压");
+					renderer.setChartTitle("今日气压");
+				}
+				else {
+					series = new XYSeries("历史气压");
+					renderer.setChartTitle(this.Year+"-"+this.Month+"-"+this.Day+"气压");
+				}
+				renderer.setXAxisMin(1);
+			    renderer.setXAxisMax(13);
+			    renderer.setYAxisMin(-20);
+			    renderer.setYAxisMax(20);
+				break;
+			default:
+				series = new XYSeries("");
+				break;
+		}
+        
+        int i=1;
+        Iterator ite;
+        if(status==0){
+        	ite = TodayWeather.get(pos).entrySet().iterator();
+        }
+        else {
+        	ite = HistroyDayWeather.get(pos).entrySet().iterator();
+		}
+        
+		for(; ite.hasNext();){
+			Map.Entry entry = (Map.Entry) ite.next();
+			series.add(i,(Double)entry.getValue());
+			//renderer.addTextLabel(i,(String)entry.getKey());
+			System.out.println(i);
+			System.out.println(entry.getKey());
+			++i;
 		}
         
         dataset.addSeries(series);
@@ -328,14 +604,33 @@ public class WeatherChart extends Activity {
         xyRenderer.setPointStyle(PointStyle.SQUARE);
         
         renderer.addSeriesRenderer(xyRenderer);
-        renderer.setApplyBackgroundColor(true);
-        renderer.setGridColor(Color.BLACK);
+        renderer.setGridColor(Color.GRAY);
+        renderer.setXLabelsAlign(Align.RIGHT);
+		renderer.setYLabelsAlign(Align.RIGHT);
+		renderer.setXLabels(15);
+		renderer.setYLabels(20);
+		renderer.setLabelsColor(Color.BLACK);
+		 renderer.addTextLabel(1, "08:00");
+	        renderer.addTextLabel(2, "09:00");
+	        renderer.addTextLabel(3, "10:00");
+	        renderer.addTextLabel(4, "11:00");
+	        renderer.addTextLabel(5, "12:00");
+	        renderer.addTextLabel(6, "13:00");
+	        renderer.addTextLabel(7, "14:00");
+	        renderer.addTextLabel(8, "15:00");
+	        renderer.addTextLabel(9, "16:00");
+	        renderer.addTextLabel(10, "17:00");
+	        renderer.addTextLabel(11, "18:00");
+	        renderer.addTextLabel(12, "19:00");
+	        renderer.addTextLabel(13, "20:00");
+		
+        renderer.setShowGrid(true);
+        renderer.setFitLegend(true);
         renderer.setBackgroundColor(Color.WHITE);
         renderer.setMarginsColor(Color.WHITE);
         renderer.setAxisTitleTextSize(16);
         
-        FrameLayout ChartLayoutView=(FrameLayout)findViewById(R.id.chart_show);
-        GraphicalView gv= ChartFactory.getLineChartView(this, dataset, renderer);
-        ChartLayoutView.addView(gv, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
+        gv= ChartFactory.getLineChartView(this, dataset, renderer);
+        ChartLayoutView.addView( gv, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT) );
 	}
 }

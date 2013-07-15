@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/equipbg" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/WeatherArg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="设备信息"
@@ -15,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/WeatherValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="名称" />
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/WeatherUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="模式" />
@@ -107,7 +108,7 @@
             android:id="@+id/array_module_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text=" MODEL 1125" />
     </LinearLayout>
     
     <TextView
@@ -131,7 +132,7 @@
             android:id="@+id/alarm_type_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="PARAERRORSIGNAL_OID" />
     </LinearLayout>
     
 </LinearLayout>

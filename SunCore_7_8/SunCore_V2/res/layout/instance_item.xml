@@ -13,7 +13,7 @@
     	    	android:layout_width="wrap_content"
             	android:layout_height="wrap_content"
             	android:textColor="#000000"
-            	android:textSize="25px" />
+            	android:textSize="30px" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,12 +24,12 @@
     	    	android:layout_width="wrap_content"
             	android:layout_height="wrap_content"
             	android:textColor="#000000"
-            	android:textSize="15px" />
+            	android:textSize="20px" />
         
         <TextView android:id="@+id/instance_status"
     	    	android:layout_width="wrap_content"
             	android:layout_height="wrap_content"
             	android:textColor="#000000"
-            	android:textSize="15px" />
+            	android:textSize="20px" />
     </LinearLayout>
 </LinearLayout>

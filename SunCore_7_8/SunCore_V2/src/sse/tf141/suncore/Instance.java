@@ -88,38 +88,38 @@ public class Instance extends Fragment{
 		
 		map=new HashMap<String, Object>();
 		map.put("instanceName", "20130507000004");
-		map.put("tenantName", "bupt");
-		map.put("Status", "4");
+		map.put("tenantName", "    bupt");
+		map.put("Status", "   4");
 		InstanceList.add(map);
 		
 		map=new HashMap<String, Object>();
 		map.put("instanceName", "20130507000005");
-		map.put("tenantName", "bupt");
-		map.put("Status", "2");
+		map.put("tenantName", "    bupt");
+		map.put("Status", "    2");
 		InstanceList.add(map);
 		
 		map=new HashMap<String, Object>();
 		map.put("instanceName", "20130507000004");
-		map.put("tenantName", "bupt");
-		map.put("Status","4");
+		map.put("tenantName", "    bupt");
+		map.put("Status","    4");
 		InstanceList.add(map);
 		
 		map=new HashMap<String, Object>();
 		map.put("instanceName", "20130507000002");
-		map.put("tenantName", "bupt");
-		map.put("Status", "5");
+		map.put("tenantName", "    bupt");
+		map.put("Status", "    5");
 		InstanceList.add(map);
 		
 		map=new HashMap<String, Object>();
 		map.put("instanceName", "20130507000032");
-		map.put("tenantName", "bupt");
-		map.put("Status", "1");
+		map.put("tenantName", "    bupt");
+		map.put("Status", "    1");
 		InstanceList.add(map);
 		
 		map=new HashMap<String, Object>();
 		map.put("instanceName", "20130507000014");
-		map.put("tenantName", "bupt");
-		map.put("Status", "3");
+		map.put("tenantName", "    bupt");
+		map.put("Status", "    3");
 		InstanceList.add(map);
 	}
 	
